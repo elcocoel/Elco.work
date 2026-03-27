@@ -1,0 +1,5 @@
+/* Loaded only on /deck so @page applies only when printing the deck. */
+@page {
+  size: 10in 5.625in; /* 16:9 standard slide */
+  margin: 0.5in;
+}

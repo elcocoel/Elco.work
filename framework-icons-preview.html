@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Framework Icons Preview — Lucide</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; padding: 2rem; background: #fafafa; }
+    h1 { font-size: 1.25rem; margin-bottom: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 400px; }
+    .cell {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .cell .icon { width: 32px; height: 32px; color: #111; }
+    .cell .label { font-size: 0.7rem; text-align: center; color: #6b7280; line-height: 1.2; }
+    .row-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.25rem; }
+    .col-labels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 400px; margin-bottom: 0.5rem; padding-left: 0.5rem; }
+    .col-labels span { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; color: #9ca3af; }
+  </style>
+</head>
+<body>
+  <h1>Framework 3×3 — Lucide icon preview</h1>
+  <div class="col-labels">
+    <span>Alignment</span>
+    <span>Meaning</span>
+    <span>Embodiment</span>
+  </div>
+  <div class="grid">
+    <div class="cell"><span class="row-label">Explore</span><i data-lucide="scan-search" class="icon"></i><span class="label">scan-search</span></div>
+    <div class="cell"><i data-lucide="messages-square" class="icon"></i><span class="label">messages-square</span></div>
+    <div class="cell"><i data-lucide="package-search" class="icon"></i><span class="label">package-search</span></div>
+    <div class="cell"><span class="row-label">Design</span><i data-lucide="workflow" class="icon"></i><span class="label">workflow</span></div>
+    <div class="cell"><i data-lucide="route" class="icon"></i><span class="label">route</span></div>
+    <div class="cell"><i data-lucide="palette" class="icon"></i><span class="label">palette</span></div>
+    <div class="cell"><span class="row-label">Operate</span><i data-lucide="settings" class="icon"></i><span class="label">settings</span></div>
+    <div class="cell"><i data-lucide="send" class="icon"></i><span class="label">send</span></div>
+    <div class="cell"><i data-lucide="package" class="icon"></i><span class="label">package</span></div>
+  </div>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

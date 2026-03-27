@@ -1,0 +1,288 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /**
+   * Home hero strip (`/`) — **Fractal reveal** (staggered column scan, double exposure,
+   * resolution arc). Doc: docs/elementary-complexity-copy/home.md
+   * Vars: `--home-alt-strip-reveal-ms`, `--home-alt-strip-settle-ms`, `--home-alt-strip-glitch-total-ms`.
+   */
+  .home-alt-strip-glitch-phase {
+    animation: homeAltStripGlitchResolve var(--home-alt-strip-glitch-total-ms, 860ms)
+      cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: filter;
+  }
+
+  /** Under outgoing: lifts through the mid-blend so the stack reads as one exposure */
+  .home-alt-strip-incoming-under {
+    animation: homeAltStripIncomingUnder var(--home-alt-strip-reveal-ms, 480ms)
+      cubic-bezier(0.35, 0, 0.25, 1) forwards;
+  }
+
+  /**
+   * SVG mask columns (in StripFigure) — each slice clears L→R after the previous.
+   * Duration / delay set inline per column; name + easing here.
+   */
+  .home-alt-strip-mask-col {
+    transform-box: fill-box;
+    animation-name: homeAltStripColVanish;
+    animation-timing-function: cubic-bezier(0.36, 0, 0.28, 1);
+    animation-fill-mode: forwards;
+  }
+
+  /** Mask = url(#id) from component; opacity arc = double exposure */
+  .home-alt-strip-outgoing-reveal {
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    animation: homeAltStripOutgoingBlend var(--home-alt-strip-reveal-ms, 480ms)
+      cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    will-change: opacity;
+  }
+
+  /** After index commit: contrast / opacity snap while parent filter clears */
+  .home-alt-strip-incoming-settle {
+    animation: homeAltStripIncomingSettle var(--home-alt-strip-settle-ms, 380ms)
+      cubic-bezier(0.28, 0, 0.18, 1) forwards;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.7s ease-out forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  .animate-stagger-word-in {
+    animation: staggerWordIn 80ms ease-out forwards;
+  }
+  .animate-verb-slide-in {
+    animation: verbSlideIn 450ms cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+  }
+  .animate-verb-slide-out {
+    animation: verbSlideOut 350ms cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+  }
+}
+
+@keyframes verbSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes verbSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0.6;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes staggerWordIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Whole strip during glitch: soft → lose resolution near swap → resolve */
+@keyframes homeAltStripGlitchResolve {
+  0% {
+    filter: blur(0) contrast(1) saturate(1);
+  }
+  28% {
+    filter: blur(1.5px) contrast(0.96) saturate(0.94);
+  }
+  /* Peak near JS frame commit (~reveal / total) */
+  56% {
+    filter: blur(5px) contrast(0.86) saturate(0.84);
+  }
+  78% {
+    filter: blur(1.8px) contrast(0.95) saturate(0.93);
+  }
+  100% {
+    filter: blur(0) contrast(1) saturate(1);
+  }
+}
+
+/* One vertical slice of outgoing mask: shrink from right edge = clear L→R within slice */
+@keyframes homeAltStripColVanish {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Double exposure: outgoing thins mid-wipe so next frame mixes through */
+@keyframes homeAltStripOutgoingBlend {
+  0% {
+    opacity: 1;
+  }
+  18% {
+    opacity: 0.94;
+  }
+  44% {
+    opacity: 0.42;
+  }
+  72% {
+    opacity: 0.62;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes homeAltStripIncomingUnder {
+  0% {
+    opacity: 0.72;
+  }
+  38% {
+    opacity: 0.88;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes homeAltStripIncomingSettle {
+  0% {
+    opacity: 0.82;
+    filter: contrast(1.05) saturate(0.94) brightness(1.02);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* Case study project images: B&W + noise default, color on hover */
+.project-image {
+  filter: grayscale(1);
+  transition: filter 0.5s ease;
+}
+.project-image:hover {
+  filter: grayscale(0);
+}
+
+/* Funnel entry prototype — see docs/plans/ctas-discovery-call-plan.md */
+@layer components {
+  /* Matte grit (under specular layer) */
+  .jewel-funnel-entry-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.17;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='jfn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23jfn)'/%3E%3C/svg%3E");
+  }
+
+  /* Dome / volume: top catch-light, bottom falloff */
+  .jewel-funnel-entry-face::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.11) 0%,
+      rgba(255, 255, 255, 0.03) 18%,
+      transparent 42%,
+      rgba(0, 0, 0, 0.14) 78%,
+      rgba(0, 0, 0, 0.22) 100%
+    );
+  }
+
+  /* Carved / engraved label: light top edge of glyph, deep shadow in the groove */
+  .jewel-funnel-entry-label {
+    position: relative;
+    z-index: 2;
+    text-shadow:
+      0 -1px 0 rgba(255, 255, 255, 0.16),
+      0 1px 0 rgba(0, 0, 0, 0.5),
+      0 3px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .jewel-funnel-group:hover .jewel-funnel-entry-label {
+    text-shadow:
+      0 -1px 0 rgba(255, 255, 255, 0.2),
+      0 1px 0 rgba(0, 0, 0, 0.38),
+      0 2px 5px rgba(0, 0, 0, 0.38);
+  }
+
+  .jewel-funnel-group:active .jewel-funnel-entry-label {
+    text-shadow:
+      0 -1px 0 rgba(255, 255, 255, 0.09),
+      0 2px 2px rgba(0, 0, 0, 0.55),
+      0 4px 10px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Floating discovery FAB — label (Syne caps); silhouette = SVG sine clip-path in component */
+  .discovery-fab-label {
+    position: relative;
+    z-index: 2;
+    text-shadow:
+      0 -0.5px 0 rgba(255, 255, 255, 0.14),
+      0 1px 0 rgba(0, 0, 0, 0.45),
+      0 2px 4px rgba(0, 0, 0, 0.35);
+  }
+
+  .jewel-funnel-group:hover .discovery-fab-label {
+    text-shadow:
+      0 -0.5px 0 rgba(255, 255, 255, 0.18),
+      0 1px 0 rgba(0, 0, 0, 0.35),
+      0 2px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Deck: print = one slide per page (full rules in app/deck/deck-print.css) */
+@media print {
+  .deck-view .deck-print-layer {
+    display: block !important;
+  }
+  .deck-view .deck-print-layer .deck-slide {
+    break-after: page;
+    page-break-after: always;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .deck-view .deck-print-layer .deck-slide:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}

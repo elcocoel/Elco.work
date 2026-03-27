@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Runtime artifact (dev-stable/build-stable scripts)
+stable
+
+# Misc
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local media pipeline (optional); committed assets live in public/project-media
+content/
+
+# Large binaries (GitHub 100MB limit) — host elsewhere if needed
+public/project-media/nerite-launch-video/*.mp4
+public/project-media/bonkbot/Unveiling*.mp4
+public/project-media/endgame-summit/3 Outcome 7Outcome 1 Endgame - Deck 30th Nov - High .pdf
+
+# Local data (CSVs, scratch — never committed)
+data/
+
+# Supabase CLI local state
+supabase/.temp/
